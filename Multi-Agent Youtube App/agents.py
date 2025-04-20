@@ -1,0 +1,65 @@
+from crewai import Agent
+from tools import yt_tool
+from crewai import LLM
+from langchain_groq import ChatGroq
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import os
+
+# api_key = "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"
+# if api_key is None:
+#     raise ValueError("OPENAI_API_KEY is not set in the environment variables.")
+# os.environ["OPENAI_API_BASE"] = "https://api.openai.com/v1"
+# os.environ["OPENAI_MODEL_NAME"] = "gpt-4o"
+
+#llm = ChatGroq(groq_api_key=os.getenv("GROQ_API_KEY"), model_name="Gemma2-9b-It")
+
+# llm=LLM(model="gpt-4o",api_key=api_key,
+#     base_url="https://api.openai.com/v1")
+
+llm = LLM(
+    model="openai/gpt-4o", # call model by provider/model_name
+    temperature=0.8,
+    max_tokens=150,
+    top_p=0.9,
+    frequency_penalty=0.1,
+    presence_penalty=0.1,
+    stop=["END"],
+    seed=42
+)
+
+
+## Create a senior blog content researcher
+
+blog_researcher=Agent(
+    role='Blog Researcher from Youtube Videos',
+    goal='get the relevant video transcription for the topic {topic} from the provided Yt channel',
+    verbose=True,
+    backstory=(
+       "Expert in understanding videos in AI Data Science , Machine Learning And GEN AI and providing suggestion"
+    ),
+    tools=[yt_tool],
+    llm=llm,
+    allow_delegation=True
+)
+
+## creating a senior blog writer agent with YT tool
+
+blog_writer=Agent(
+    role='Blog Writer',
+    goal='Narrate compelling tech stories about the video {topic} from YT video',
+    verbose=True,
+    backstory=(
+        "With a flair for simplifying complex topics, you craft"
+        "engaging narratives that captivate and educate, bringing new"
+        "discoveries to light in an accessible manner."
+    ),
+    tools=[yt_tool],
+    llm=llm,
+    allow_delegation=False
+
+
+)

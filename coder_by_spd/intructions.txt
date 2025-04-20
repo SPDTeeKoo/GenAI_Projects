@@ -1,0 +1,3 @@
+install ollama
+ollama run qwen2.5-coder
+create CoderMan -f ./modelfile
