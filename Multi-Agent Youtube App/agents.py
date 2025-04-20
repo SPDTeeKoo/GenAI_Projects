@@ -9,7 +9,7 @@ load_dotenv()
 
 import os
 
-# api_key = "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"
+# api_key = ""
 # if api_key is None:
 #     raise ValueError("OPENAI_API_KEY is not set in the environment variables.")
 # os.environ["OPENAI_API_BASE"] = "https://api.openai.com/v1"
